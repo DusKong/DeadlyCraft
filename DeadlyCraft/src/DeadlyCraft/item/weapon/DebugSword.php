@@ -3,11 +3,10 @@
 namespace DeadlyCraft\item\weapon;
 
 use pocketmine\item\Sword;
-use minecraft\item\CustomItemTrait;
-use minecraft\item\CustomItemInterface;
+use minecraft\item\ItemComponent;
 
-class DebugSword extends Sword implements CustomItemInterface{
-    use CustomItemTrait;
+class DebugSword extends Sword{
+    use ItemComponent;
 
     public function componentInit() :void{//php 7.0.0前
         $this->identifier = "pocketmine:debug_sword";
