@@ -1,14 +1,14 @@
 <?php
 
-namespace DeadlyCraft\doungeons\floor;
+namespace DeadlyCraft\doungeons\layer;
 
-abstract class Floor{
+abstract class Layer{
 
     protected $channel = null;
 
     protected $clear = false;
 
-    public function joinFloor(Channel $channel) :void{
+    public function joinLayer(Channel $channel) :void{
         $this->channel = $channel;
     }
 

@@ -8,10 +8,12 @@ class DungennGenerator {
     
     public function __construct(Dungeon $dungeon) {
         $this->dungeon = $dungeon;
-        $this->channel = new DungeonChannel(self::nextDungeonId(), $dungeon->getWorld());
+        $this->stage = $dungeon->getStage();
+        $this->channel = new DungeonChannel(self::nextDungeonId(), $this->stage->getWorld());
     }
 
     public function makeDungeon() {
+
     }
 
     public static function nextDungeonId() :string{

@@ -1,8 +1,8 @@
 <?php
 
-namespace DeadlyCraft\dungeons\floor;
+namespace DeadlyCraft\dungeons\layer;
 
-class BattleFloor extends Floor{
+class BattleLayer extends Layer{
 
     private $entitiesData = [];
 

@@ -4,19 +4,37 @@ namespace DeadlyCraft\doungeons;
 
 class TestDungeon extends Dungeon{
 
-    public function getMaxFloor() :int{
+    public function getTopFloor() :int{
         return 5;
     }
 
-    public function getFloorRule() :array{
+    public function getFloorPatterns() :array{
         return [
-            [
-                "identifier" => BattleFloor::class
-            ]
-        ]
+            new FloorPattern(
+                [
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    [ new BattleFloor(), new BattleFloor() ],
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                    new BattleFloor(),
+                ]
+            )
+        ];
     }
 
-    public function getEntitySpawnRule() :array{
+    public function getEntitySpawnRules() :array{
         return [
             [
                 "identifier" => Zombie::class,
