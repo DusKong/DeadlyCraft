@@ -3,16 +3,23 @@
 namespace DeadlyCraft\item\weapon;
 
 use pocketmine\item\Sword;
-use minecraft\item\ItemComponent;
+use minecraft\item\ItemComponentHandlingTrait;
+use minecraft\item\components\HandEquipped;
+use minecraft\item\components\MaxStackSize;
+use minecraft\item\components\Icon;
 
 class DebugSword extends Sword{
-    use ItemComponent;
+    use ItemComponentHandlingTrait;
 
-    public function componentInit() :void{//php 7.0.0前
-        $this->identifier = "pocketmine:debug_sword";
-        $this->hand_equipped = true;
-        $this->max_stack_size = 1;
-        $this->texture = "sword";
-        $this->frame_index = 0;
+    public function getIdentifier() :string{
+        return "pocketmine:debug_sword";
+    }
+
+    public function getItemComponents() :array{
+        return [
+            new HandEquipped(true),
+            new MaxStackSize(1),
+            new Icon("sword", 0),
+        ];
     }
 }
