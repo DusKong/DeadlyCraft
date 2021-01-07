@@ -3,19 +3,25 @@
 namespace DeadlyCraft\item\food;
 
 use pocketmine\item\Food;
-use minecraft\item\FoodComponent;
+use minecraft\item\ItemComponentHandlingTrait;
+use minecraft\item\components\Food as MinecraftFood;
+use minecraft\item\components\MaxStackSize;
+use minecraft\item\components\Icon;
+use minecraft\item\components\UseAnimation;
 
 class DebugFood extends Food{
-    use FoodComponent;
+    use ItemComponentHandlingTrait;
 
-    public function componentInit() :void{
-        $this->identifier = "pocketmine:debug_food";
-        $this->use_duration = 2;
-        $this->use_animation = "eat";
-        $this->nutrition = 4;
-        $this->saturation_modifier = "low";
-        $this->texture = "sword";
-        $this->frame_index = 2;
+    public function getIdentifier() :string{
+        return "pocketmine:debug_food";
+    }
+
+    public function getItemComponents() :array{
+        return [
+            new Icon("helmet", 4),
+            new MinecraftFood(true, 5, "low"),
+            new UseAnimation(1),
+        ];
     }
 
     public function requiresHunger() : bool{
