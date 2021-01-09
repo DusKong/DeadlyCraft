@@ -8,33 +8,7 @@ class TestDungeon extends Dungeon{
         return 5;
     }
 
-    public function getFloorPatterns() :array{
-        return [
-            new FloorPattern(
-                [
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    [ new BattleFloor(), new BattleFloor() ],
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                    new BattleFloor(),
-                ]
-            )
-        ];
-    }
-
-    public function getEntitySpawnRules() :array{
+    public function getEntitySpawnTable() :array{
         return [
             [
                 "identifier" => Zombie::class,

@@ -17,7 +17,6 @@ class DebugHelmet extends Armor{
     }
 
     public function getItemComponents() :array{
-        var_dump("aaaa");
         return [
             new MaxStackSize(1),
             new Icon("helmet", 1),
