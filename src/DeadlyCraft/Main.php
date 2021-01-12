@@ -23,7 +23,6 @@ class Main extends PluginBase{
 
     public function onLoad() : void{
         self::setInstance($this);
-        new EntityFactory();
     }
 
     public function onEnable() {
@@ -40,6 +39,7 @@ class Main extends PluginBase{
         //self::$DB->query("CREATE TABLE IF NOT EXISTS season (name TEXT PRIMARY KEY, data TEXT)");
 
         new ItemFactory();
+        new EntityFactory();
         LootTable::init();
     }
 }

@@ -20,7 +20,7 @@ class DebugFood extends Food{
         return [
             new Icon("helmet", 4),
             new MinecraftFood(true, 5, "low"),
-            new UseAnimation(1),
+            new UseAnimation("drink"),
         ];
     }
 
