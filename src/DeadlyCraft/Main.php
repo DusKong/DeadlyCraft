@@ -9,7 +9,9 @@ use minecraft\Minecraft;
 use DeadlyCraft\channel\LobbyChannel;
 use DeadlyCraft\player\PlayerSession;
 use DeadlyCraft\item\ItemFactory;
+use DeadlyCraft\entity\EntityFactory;
 use DeadlyCraft\utils\LootTable;
+use DeadlyCraft\DataBase\DB;
 
 class Main extends PluginBase{
     use SingletonTrait;
@@ -17,8 +19,11 @@ class Main extends PluginBase{
     public static $DB;
     public static $lobbyChannel;
 
+    public static $dataFolder;
+
     public function onLoad() : void{
         self::setInstance($this);
+        new EntityFactory();
     }
 
     public function onEnable() {

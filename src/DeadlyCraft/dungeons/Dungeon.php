@@ -10,6 +10,11 @@ use DeadlyCraft\channel\DungeonChannel;
 abstract class Dungeons {
 
     protected $difficulty;
+    protected $pattern;
+
+    public function __construct() {
+        $this->pattern = $this->getLayerPattern();
+    }
 
     public function getChannelClass() :string{
         return DungeonChannel::class;
@@ -30,4 +35,6 @@ abstract class Dungeons {
     public function getStage() :Stage{
         return new TestStage();
     }
+
+    abstract public function getLayerPattern() :array;
 }
