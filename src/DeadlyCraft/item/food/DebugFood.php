@@ -12,10 +12,6 @@ use minecraft\item\components\UseAnimation;
 class DebugFood extends Food{
     use ItemComponentHandlingTrait;
 
-    public function getIdentifier() :string{
-        return "pocketmine:debug_food";
-    }
-
     public function getItemComponents() :array{
         return [
             new Icon("helmet", 4),

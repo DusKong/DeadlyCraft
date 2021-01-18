@@ -3,12 +3,14 @@
 namespace DeadlyCraft;
 
 use pocketmine\plugin\PluginBase;
+use pocketmine\entity\Location;
 use pocketmine\utils\SingletonTrait;
 use minecraft\Minecraft;
 
 use DeadlyCraft\channel\LobbyChannel;
 use DeadlyCraft\player\PlayerSession;
 use DeadlyCraft\item\ItemFactory;
+use DeadlyCraft\block\BlockFactory;
 use DeadlyCraft\entity\EntityFactory;
 use DeadlyCraft\utils\LootTable;
 use DeadlyCraft\DataBase\DB;
@@ -39,7 +41,12 @@ class Main extends PluginBase{
         //self::$DB->query("CREATE TABLE IF NOT EXISTS season (name TEXT PRIMARY KEY, data TEXT)");
 
         new ItemFactory();
+        new BlockFactory();
         new EntityFactory();
         LootTable::init();
+    }
+
+    public function getLobbyPosition() :Location{
+        return new Location(0.5, 111, 0.5, 180, 0, $this->getServer()->getWorldManager()->getDefaultWorld());
     }
 }

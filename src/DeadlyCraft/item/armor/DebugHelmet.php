@@ -13,10 +13,6 @@ use minecraft\item\components\Foil;
 class DebugHelmet extends Armor{
     use ItemComponentHandlingTrait;
 
-    public function getIdentifier() :string{
-        return "pocketmine:debug_helmet";
-    }
-
     public function getItemComponents() :array{
         return [
             new MaxStackSize(1),

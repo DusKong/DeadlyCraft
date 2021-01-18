@@ -18,10 +18,6 @@ use minecraft\item\components\{
 class DebugSword extends Sword{
     use ItemComponentHandlingTrait;
 
-    public function getIdentifier() :string{
-        return "pocketmine:debug_sword";
-    }
-
     public function getItemComponents() :array{
         return [
             new HandEquipped(true),
