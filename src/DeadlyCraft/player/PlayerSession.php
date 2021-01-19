@@ -3,6 +3,7 @@
 namespace DeadlyCraft\player;
 
 use pocketmine\Server;
+use pocketmine\entity\Skin;
 use pocketmine\player\PlayerInfo;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
@@ -18,6 +19,8 @@ class PlayerSession extends Player{
 
     private $mode = self::MODE_LOBBY;
 
+    private $custume;
+
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, ?CompoundTag $namedtag) {
         parent::__construct($server, $session, $playerInfo, $authenticated, $namedtag);
     }
@@ -28,6 +31,16 @@ class PlayerSession extends Player{
 
     public function setMode(int $mode) :void{
         $this->mode = $mode;
+    }
+
+    public function sendSkin(?array $targets = null) : void{
+        $this->server->broadcastPackets($targets ?? $this->hasSpawned, [
+            PlayerSkinPacket::create($this->getUniqueId(), SkinAdapterSingleton::get()->toSkinData($this->skin))
+        ]);
+    }
+
+    protected function initEntity(CompoundTag $nbt) : void{
+        parent::initEntity($nbt);
     }
 
     public function sendContainerClose($windowId) {
