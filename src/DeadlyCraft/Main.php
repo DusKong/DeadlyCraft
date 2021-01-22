@@ -4,6 +4,7 @@ namespace DeadlyCraft;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\entity\Location;
+use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
 use pocketmine\utils\SingletonTrait;
 use minecraft\Minecraft;
 
@@ -13,6 +14,7 @@ use DeadlyCraft\item\ItemFactory;
 use DeadlyCraft\block\BlockFactory;
 use DeadlyCraft\entity\EntityFactory;
 use DeadlyCraft\utils\LootTable;
+use DeadlyCraft\utils\CustumeSkinAdapter;
 use DeadlyCraft\DataBase\DB;
 
 class Main extends PluginBase{
@@ -44,6 +46,7 @@ class Main extends PluginBase{
         new BlockFactory();
         new EntityFactory();
         LootTable::init();
+        //SkinAdapterSingleton::set(new CustumeSkinAdapter());
     }
 
     public function getLobbyPosition() :Location{

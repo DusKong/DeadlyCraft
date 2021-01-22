@@ -3,6 +3,8 @@
 namespace DeadlyCraft\player;
 
 use pocketmine\entity\Skin;
+use pocketmine\network\mcpe\protocol\types\skin\PersonaPieceTintColor;
+use pocketmine\network\mcpe\protocol\types\skin\PersonaSkinPiece;
 
 use DeadlyCraft\custume\cape\Cape;
 use DeadlyCraft\custume\hat\Hat;
@@ -13,22 +15,29 @@ class CustumeSkin {
 
     private $skinData;
 
+    private $geometryData;
+
     private $cape;
 
 
-    public function __construct(string $skinId, string $skinData, Cape $cape, Hat $hat) {
+    public function __construct(string $skinId, string $skinData, string $geometryData, /*Cape $cape, */Hat $hat) {
         $this->skinId = $skinId;
         $this->skinData = $skinData;
-        $this->cape = $cape;
+        $this->geometryData = $geometryData;
+        //$this->cape = $cape;
         $this->hat = $hat;
     }
 
     public function getSkinId() :string{
-        return $this->skin->getSkinId();
+        return $this->skinId;
     }
 
     public function getSkinData() :string{
         return $this->skinData;
+    }
+
+    public function getGeometryData() :string{
+        return $this->geometryData;
     }
 
     public function getCape() :Cape{

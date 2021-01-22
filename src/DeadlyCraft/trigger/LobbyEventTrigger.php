@@ -1,13 +1,13 @@
 <?php
 
-namespace AxisServer\trigger;
+namespace DeadlyCraft\trigger;
 
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\network\mcpe\InventoryManager;
 use pocketmine\network\mcpe\protocol\ProtocolInfo as Info;
 
-use AxisServer\Main;
+use DeadlyCraft\Main;
 
 class LobbyEventTrigger extends EventTrigger{
 
@@ -27,7 +27,6 @@ class LobbyEventTrigger extends EventTrigger{
                     $event->cancel();
                     $player = $networkSession->getPlayer();
                     $player->sendContainerClose($packet->windowId);
-                    $player->sendForm(new PlayerMenuForm());
                 }
                 break;
         }

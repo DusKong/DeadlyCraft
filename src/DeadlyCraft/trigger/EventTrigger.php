@@ -1,6 +1,6 @@
 <?php
 
-namespace AxisServer\trigger;
+namespace DeadlyCraft\trigger;
 
 use pocketmine\event\player\{
     PlayerQuitEvent,

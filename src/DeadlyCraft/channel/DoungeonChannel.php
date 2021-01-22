@@ -17,6 +17,7 @@ class DoungeonChannel extends Channel{
     public function __construct(string $name, World $world, Dungeon $dungeon) {
         parent::__construct($name, $world);
         $this->dungeon = $dungeon;
+        $this->eventTrigger = new DungeonEventTrigger($this);
     }
 
     public function addEntity(Entity $entity) :void{

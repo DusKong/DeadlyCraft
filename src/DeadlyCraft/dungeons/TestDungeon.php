@@ -20,7 +20,7 @@ class TestDungeon extends Dungeon{
                 new BattleLayer(),
                 new BattleLayer(),
             ]
-        ]
+        ];
     }
 
     public function getEntitySpawnTable() :array{

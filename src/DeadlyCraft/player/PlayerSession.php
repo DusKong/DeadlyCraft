@@ -7,9 +7,13 @@ use pocketmine\entity\Skin;
 use pocketmine\player\PlayerInfo;
 use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\network\mcpe\protocol\ContainerClosePacket;
+use pocketmine\network\mcpe\protocol\PlayerSkinPacket;
 use pocketmine\nbt\tag\CompoundTag;
 
 use minecraft\Player;
+
+use DeadlyCraft\trigger\EventTrigger;
+use DeadlyCraft\utils\CustumeSkinAdapter;
 
 class PlayerSession extends Player{
 
@@ -18,6 +22,7 @@ class PlayerSession extends Player{
     const MODE_DEATH = 2;
 
     private $mode = self::MODE_LOBBY;
+    private $eventTrigger;
 
     private $custume;
 
@@ -33,9 +38,21 @@ class PlayerSession extends Player{
         $this->mode = $mode;
     }
 
+    public function setEventTrigger(EventTrigger $trigger) :void{
+        $this->eventTrigger = $trigger;
+    }
+
+    public function getEventTrigger() :?EventTrigger{
+        return $this->eventTrigger;
+    }
+
+    public function setCustume(CustumeSkin $custume) :void{
+        $this->custume = $custume;
+    }
+
     public function sendSkin(?array $targets = null) : void{
         $this->server->broadcastPackets($targets ?? $this->hasSpawned, [
-            PlayerSkinPacket::create($this->getUniqueId(), SkinAdapterSingleton::get()->toSkinData($this->skin))
+            PlayerSkinPacket::create($this->getUniqueId(), (new CustumeSkinAdapter())->toSkinData($this->custume))
         ]);
     }
 
