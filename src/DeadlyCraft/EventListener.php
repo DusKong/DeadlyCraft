@@ -43,6 +43,7 @@ class EventListener implements Listener {
 
         $player->setEventTrigger(new LobbyEventTrigger());
 
+
         //$entity = new MetalicZombie($channel);
         //$entity->setPosition(192, 5, 96);
         //$channel->addEntity($entity);

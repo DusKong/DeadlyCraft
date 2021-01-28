@@ -17,6 +17,11 @@ use DeadlyCraft\utils\LootTable;
 use DeadlyCraft\utils\CustumeSkinAdapter;
 use DeadlyCraft\DataBase\DB;
 
+use DeadlyCraft\commands\{
+    BlockCommand,
+    TestCommand,
+};
+
 class Main extends PluginBase{
     use SingletonTrait;
 
@@ -47,6 +52,9 @@ class Main extends PluginBase{
         new EntityFactory();
         LootTable::init();
         //SkinAdapterSingleton::set(new CustumeSkinAdapter());
+
+        $this->getServer()->getCommandMap()->register("pocketmine", new BlockCommand("block"));
+        $this->getServer()->getCommandMap()->register("pocketmine", new TestCommand("test"));
     }
 
     public function getLobbyPosition() :Location{

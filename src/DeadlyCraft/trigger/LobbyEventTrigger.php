@@ -21,6 +21,7 @@ class LobbyEventTrigger extends EventTrigger{
     public function onSendPacketTrigger(DataPacketSendEvent $event) :void{
         $packet = $event->getPackets()[0];
         $networkSession = $event->getTargets()[0];
+        return;
         switch($packet::NETWORK_ID) {
             case Info::CONTAINER_OPEN_PACKET:
                 if($packet->windowId == InventoryManager::HARDCODED_INVENTORY_WINDOW_ID) {
