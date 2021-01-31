@@ -42,7 +42,8 @@ class Main extends PluginBase{
         Minecraft::getInstance()->setPlayerClass(PlayerSession::class);
 
         self::$DB = new DB(self::$dataFolder."database/playerdata");
-        //self::$DB->query("CREATE TABLE IF NOT EXISTS account (name TEXT PRIMARY KEY, data TEXT)");
+        self::$DB->query("CREATE TABLE IF NOT EXISTS account (name TEXT PRIMARY KEY, data TEXT)");
+        self::$DB->query("CREATE TABLE IF NOT EXISTS status (name TEXT PRIMARY KEY, data TEXT)");
         //self::$DB->query("CREATE TABLE IF NOT EXISTS inventory (name TEXT PRIMARY KEY, data TEXT)");
         //self::$DB->query("CREATE TABLE IF NOT EXISTS config (name TEXT PRIMARY KEY, data TEXT)");
         //self::$DB->query("CREATE TABLE IF NOT EXISTS season (name TEXT PRIMARY KEY, data TEXT)");

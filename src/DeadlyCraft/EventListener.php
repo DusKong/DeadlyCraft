@@ -28,42 +28,41 @@ use pocketmine\event\server\{
 
 use DeadlyCraft\player\PlayerSession;
 use DeadlyCraft\player\CustumeSkin;
-use DeadlyCraft\entity\monster\MetalicZombie;
+use DeadlyCraft\entity\monster\Zombie;
 use DeadlyCraft\trigger\LobbyEventTrigger;
 
 class EventListener implements Listener {
 
     public function onJoin(PlayerJoinEvent $event) {
+        $event->setJoinMessage(null);
         $player = $event->getPlayer();
+
+        $player->getInventory()->clearAll();
+        $player->getArmorInventory()->clearAll();
+        $player->checkData();
 
         $channel = Main::$lobbyChannel;
         $player->setChannel($channel);
-
         $player->teleport(Main::getInstance()->getLobbyPosition());
-
         $player->setEventTrigger(new LobbyEventTrigger());
-
-
-        //$entity = new MetalicZombie($channel);
-        //$entity->setPosition(192, 5, 96);
-        //$channel->addEntity($entity);
-
-        $skin = $player->getPlayerInfo()->getSkin();
-        $custume = new CustumeSkin($skin->getSkinId(), $skin->getSkinData(), $skin->getGeometryData(), new \DeadlyCraft\custume\hat\FlowerPot());
-        $player->setCustume($custume);
-        $player->sendSkin();
     }
 
     public function onQuit(PlayerQuitEvent $event) {
         $event->setQuitMessage(null);
         $player = $event->getPlayer();
-        return;
         if($player->spawned) {
             $player->saveToAll();
         }
     }
 
     public function onInteract(PlayerInteractEvent $event) {
+        $player = $event->getPlayer();
+        $pos = $player->getPosition();
+        $channel = $player->getChannel();
+
+        $entity = new Zombie($channel);
+        $entity->setPosition($pos->x, $pos->y, $pos->z);
+        $channel->addEntity($entity);
     }
 
     public function onDropItem(PlayerDropItemEvent $event) { $event->cancel(); }

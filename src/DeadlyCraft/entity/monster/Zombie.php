@@ -31,6 +31,7 @@ class Zombie extends EntityMob implements Monster{
 
     protected function applyEntityAttributes() : void{
         parent::applyEntityAttributes();
+        return;
         $this->attributeMap->getAttribute(Attribute::MOVEMENT_SPEED)->setValue(0.23000000417232513);
         $this->attributeMap->getAttribute(Attribute::FOLLOW_RANGE)->setValue(35);
     }
