@@ -21,6 +21,7 @@ class AccountData extends PlayerData {
             "coin" => 0,
             "medal" => 0,
             "rank" => 0,
+            "official" => false,
             "permissions" => [],
             "deviceId" => "",
             "ip" => "",

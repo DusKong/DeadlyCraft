@@ -60,6 +60,7 @@ class EventListener implements Listener {
         $pos = $player->getPosition();
         $channel = $player->getChannel();
 
+        //return;
         $entity = new Zombie($channel);
         $entity->setPosition($pos->x, $pos->y, $pos->z);
         $channel->addEntity($entity);

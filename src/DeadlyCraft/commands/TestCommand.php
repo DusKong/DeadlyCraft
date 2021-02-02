@@ -27,10 +27,11 @@ class TestCommand extends VanillaCommand {
 
     public function execute(CommandSender $sender, string $commandLabel, array $args){
 
-        $path = str_replace("TestCommand.php", "", __FILE__ . "s\\".$args[0]);
+        $path = Server::getInstance()->getPluginPath()."resources\\structure\\".$args[0];
 
         $load = new LoadStructure($path);
-        $load->setOrigin((int) $sender->getPosition()->getX(), (int) $sender->getPosition()->getY(), (int) $sender->getPosition()->getZ());
-        $load->build($sender->getWorld());
+        var_dump($load->nbt);
+       // $load->setOrigin((int) $sender->getPosition()->getX(), (int) $sender->getPosition()->getY(), (int) $sender->getPosition()->getZ());
+        //$load->build($sender->getWorld());
     }
 }

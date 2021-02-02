@@ -34,7 +34,6 @@ class PlayerSession extends Player{
     private $eventTrigger;
 
     private $job;
-    private $custume;
 
     private $permissions = [];
 
@@ -59,6 +58,28 @@ class PlayerSession extends Player{
 
     public function setMode(int $mode) :void{
         $this->mode = $mode;
+    }
+
+    public function isOfficial() :bool{
+        return $this->accountData->getData("official");
+    }
+
+    public function setOfficial(bool $official) :void{
+        $this->accountData->setData("official", $official);
+        $this->setDefaultData();
+    }
+
+    public function getRank() :int{
+        return $this->accountData->getData("rank");
+    }
+
+    public function setRank(int $rank) :void{
+        $this->accountData->setData("rank", $rank);
+        $this->setDefaultData();
+    }
+
+    public function setDefaultData() :void{
+        $this->setNameTag(Rank::getColor($this).$this->getName());
     }
 
     public function setEventTrigger(EventTrigger $trigger) :void{
@@ -89,15 +110,11 @@ class PlayerSession extends Player{
         $this->armorInventory->setContents($data2["armor"]->getContents());
     }
 
-    public function setCustume(CustumeSkin $custume) :void{
-        $this->custume = $custume;
-    }
-
-    public function sendSkin(?array $targets = null) : void{
+    /*public function sendSkin(?array $targets = null) : void{
         $this->server->broadcastPackets($targets ?? $this->hasSpawned, [
             PlayerSkinPacket::create($this->getUniqueId(), (new CustumeSkinAdapter())->toSkinData($this->custume))
         ]);
-    }
+    }*/
 
     public function getPermissions() :array{
         return $this->accountData->getData("permissions");
