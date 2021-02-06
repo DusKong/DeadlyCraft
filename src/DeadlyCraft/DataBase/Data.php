@@ -4,7 +4,7 @@ namespace DeadlyCraft\DataBase;
 
 abstract class Data {
 
-    public $status = [];
+    protected $status = [];
 
     public function getData(string $key) {
         return $this->status[$key];

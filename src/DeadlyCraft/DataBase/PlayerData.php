@@ -2,19 +2,18 @@
 
 namespace DeadlyCraft\DataBase;
 
-use pocketmine\player\Player;
 use DeadlyCraft\Main;
 
 abstract class PlayerData extends Data{
 
-    public $player;
+    protected $name;
 
-    public function __construct(Player $player) {
-        $this->player = $player;
+    public function __construct(string $name) {
+        $this->name = $name;
     }
 
     public function checkData() :bool{
-        $c = Main::$DB->num_rows("SELECT name FROM ".$this->tableName." WHERE name = '".$this->player->getName()."'") != 0;
+        $c = Main::$DB->num_rows("SELECT name FROM ".$this->tableName." WHERE name = '".$this->name."'") != 0;
         if($c) {
             $this->syncData();
             return true;
@@ -25,7 +24,7 @@ abstract class PlayerData extends Data{
     }
 
     public function syncData() :void{
-        $result = Main::$DB->get_row("SELECT * FROM ".$this->tableName." WHERE name = '" . $this->player->getName() . "'");
+        $result = Main::$DB->get_row("SELECT * FROM ".$this->tableName." WHERE name = '" . $this->name . "'");
         $legacyData = $this->jsonDeserialize(json_decode($result["data"], true));
         foreach ($legacyData as $dataName => $data) {
             $this->status[$dataName] = $data;
@@ -33,11 +32,11 @@ abstract class PlayerData extends Data{
     }
 
     public function saveToData() :void{
-        $c = Main::$DB->num_rows("SELECT name FROM ".$this->tableName." WHERE name = '".$this->player->getName()."'") != 0;
+        $c = Main::$DB->num_rows("SELECT name FROM ".$this->tableName." WHERE name = '".$this->name."'") != 0;
         if($c) {
-            Main::$DB->update($this->tableName, ["data" => json_encode($this->jsonSerialize())], ["name" => $this->player->getName()]);
+            Main::$DB->update($this->tableName, ["data" => json_encode($this->jsonSerialize())], ["name" => $this->name]);
         }else{
-            Main::$DB->insert($this->tableName, ["name" => $this->player->getName(), "data" => json_encode($this->jsonSerialize())]);
+            Main::$DB->insert($this->tableName, ["name" => $this->name, "data" => json_encode($this->jsonSerialize())]);
         }
     }
 

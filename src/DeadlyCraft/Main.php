@@ -2,6 +2,7 @@
 
 namespace DeadlyCraft;
 
+use pocketmine\player\IPlayer;
 use pocketmine\plugin\PluginBase;
 use pocketmine\entity\Location;
 use pocketmine\network\mcpe\convert\SkinAdapterSingleton;
@@ -10,6 +11,7 @@ use minecraft\Minecraft;
 
 use DeadlyCraft\channel\LobbyChannel;
 use DeadlyCraft\player\PlayerSession;
+use DeadlyCraft\player\OfflinePlayer;
 use DeadlyCraft\item\ItemFactory;
 use DeadlyCraft\block\BlockFactory;
 use DeadlyCraft\entity\EntityFactory;
@@ -60,5 +62,22 @@ class Main extends PluginBase{
 
     public function getLobbyPosition() :Location{
         return new Location(0.5, 111, 0.5, 180, 0, $this->getServer()->getWorldManager()->getDefaultWorld());
+    }
+
+    public function getIPlayerByName(string $name) :?IPlayer{
+        $player = $this->getServer()->getPlayerByPrefix($name);
+        if($player === null) {
+            $c = Main::$DB->num_rows("SELECT name FROM account WHERE name = '".$name."'") != 0;
+            if($c) {
+                return new OfflinePlayer($name);
+            }
+            return null;
+        }
+        return $player;
+    }
+
+    public static function getDataByName(string $name){
+        $result = self::$DB->get_row("SELECT * FROM Account WHERE name = '" . $name . "'");
+        return $result;
     }
 }

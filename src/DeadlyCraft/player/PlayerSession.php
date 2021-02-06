@@ -31,6 +31,7 @@ class PlayerSession extends Player{
     private $statusData;
 
     private $mode = self::MODE_LOBBY;
+    private $party;
     private $eventTrigger;
 
     private $job;
@@ -40,8 +41,9 @@ class PlayerSession extends Player{
     public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, ?CompoundTag $namedtag) {
         parent::__construct($server, $session, $playerInfo, $authenticated, $namedtag);
 
-        $this->accountData = new AccountData($this);
-        $this->statusData = new StatusData($this);
+        $this->accountData = new AccountData($this->getName());
+        $this->statusData = new StatusData($this->getName());
+        $this->party = new Party($this);
     }
 
     public function getAccountData() :AccountData{
@@ -60,6 +62,14 @@ class PlayerSession extends Player{
         $this->mode = $mode;
     }
 
+    public function getParty() :Party{
+        return $this->party;
+    }
+
+    public function setParty(Party $party) :void{
+        $this->party = $party;
+    }
+
     public function isOfficial() :bool{
         return $this->accountData->getData("official");
     }
@@ -76,6 +86,35 @@ class PlayerSession extends Player{
     public function setRank(int $rank) :void{
         $this->accountData->setData("rank", $rank);
         $this->setDefaultData();
+    }
+
+    public function getFriends() :array{
+        $data = $this->accountData->getData("friend");
+        $friends = [];
+        foreach ($data["friends"] as $i => $name) {
+            $friends[$name] = $this->getServer()->getPlayerByPrefix($name);
+        }
+        return $friends;
+    }
+
+    public function addFriend(string $name) :void{
+
+    }
+
+    public function removeFriend(string $name) :void{
+
+    }
+
+    public function applyFriend(string $name) :void{
+
+    }
+
+    public function removeApplied(string $name) :void{
+
+    }
+
+    public function removeApplying(string $name) :void{
+        
     }
 
     public function setDefaultData() :void{
@@ -97,13 +136,13 @@ class PlayerSession extends Player{
     public function setJob(Job $job) :void{
         $oldJob = $this->job;
         if($oldJob !== null) {
-            $data = $this->statusData->getData($oldJob::getName());
+            $data = $this->statusData->getData($oldJob::getId());
             $data["inventory"]->setContents($this->inventory->getContents());
             $data["armor"]->setContents($this->armorInventory->getContents());
         }
 
         $this->job = $job;
-        $jobName = $job::getName();
+        $jobName = $job::getId();
         $this->accountData->setData("current_job", $jobName);
         $data2 = $this->statusData->getData($jobName);
         $this->inventory->setContents($data2["inventory"]->getContents());
@@ -147,7 +186,7 @@ class PlayerSession extends Player{
         $this->statusData->checkData();
         $this->setJob(Job::getClassByName($this->accountData->getData("current_job")));
 
-        $statusData = $this->statusData->getData($this->getJob()::getName());
+        $statusData = $this->statusData->getData($this->getJob()::getId());
         $this->inventory->setContents($statusData["inventory"]->getContents());
         $this->armorInventory->setContents($statusData["armor"]->getContents());
     }

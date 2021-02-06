@@ -8,6 +8,7 @@ use pocketmine\network\mcpe\InventoryManager;
 use pocketmine\network\mcpe\protocol\ProtocolInfo as Info;
 
 use DeadlyCraft\Main;
+use DeadlyCraft\form\menu\LobbyMenuForm;
 
 class LobbyEventTrigger extends EventTrigger{
 
@@ -21,13 +22,14 @@ class LobbyEventTrigger extends EventTrigger{
     public function onSendPacketTrigger(DataPacketSendEvent $event) :void{
         $packet = $event->getPackets()[0];
         $networkSession = $event->getTargets()[0];
-        return;
         switch($packet::NETWORK_ID) {
             case Info::CONTAINER_OPEN_PACKET:
                 if($packet->windowId == InventoryManager::HARDCODED_INVENTORY_WINDOW_ID) {
                     $event->cancel();
                     $player = $networkSession->getPlayer();
                     $player->sendContainerClose($packet->windowId);
+
+                    $player->sendForm(new LobbyMenuForm($player));
                 }
                 break;
         }

@@ -45,6 +45,19 @@ class EventListener implements Listener {
         $player->setChannel($channel);
         $player->teleport(Main::getInstance()->getLobbyPosition());
         $player->setEventTrigger(new LobbyEventTrigger());
+
+        $scoreboard = $player->getScoreboard();
+        $scoreboard->clear();
+        $scoreboard->setScore(0, "".$player->getAccountData()->getData("coin"));
+        $scoreboard->setScore(1, "".$player->getAccountData()->getData("medal"));
+        $scoreboard->setScore(2, "2");
+        $scoreboard->setScore(3, "3");
+        $scoreboard->setScore(4, "4");
+        $scoreboard->setScore(5, "5");
+        $scoreboard->setScore(6, "6");
+        $scoreboard->setScore(7, "7");
+        $scoreboard->setScore(8, "8");
+        $scoreboard->update();
     }
 
     public function onQuit(PlayerQuitEvent $event) {
@@ -56,14 +69,6 @@ class EventListener implements Listener {
     }
 
     public function onInteract(PlayerInteractEvent $event) {
-        $player = $event->getPlayer();
-        $pos = $player->getPosition();
-        $channel = $player->getChannel();
-
-        //return;
-        $entity = new Zombie($channel);
-        $entity->setPosition($pos->x, $pos->y, $pos->z);
-        $channel->addEntity($entity);
     }
 
     public function onDropItem(PlayerDropItemEvent $event) { $event->cancel(); }

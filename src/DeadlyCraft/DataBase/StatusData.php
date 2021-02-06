@@ -3,7 +3,6 @@
 namespace DeadlyCraft\DataBase;
 
 use pocketmine\Server;
-use pocketmine\player\Player;
 
 use DeadlyCraft\player\job\Soldier;
 use DeadlyCraft\inventory\SerializeInventory;
@@ -12,13 +11,13 @@ class StatusData extends PlayerData {
 
     public $tableName = "status";
 
-    public function __construct(Player $player) {
-        parent::__construct($player);
+    public function __construct(string $name) {
+        parent::__construct($name);
         foreach ($this->getInitialJob() as $job) {
             $data = $job::getDefaultData();
-            $data["inventory"] = new SerializeInventory($player);
-            $data["armor"] = new SerializeInventory($player);
-            $this->status[$job::getName()] = $data;
+            $data["inventory"] = new SerializeInventory();
+            $data["armor"] = new SerializeInventory();
+            $this->status[$job::getId()] = $data;
         }
     }
 
