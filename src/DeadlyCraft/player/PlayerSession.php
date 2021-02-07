@@ -3,6 +3,7 @@
 namespace DeadlyCraft\player;
 
 use pocketmine\Server;
+use pocketmine\player\IPlayer;
 use pocketmine\entity\Skin;
 use pocketmine\player\PlayerInfo;
 use pocketmine\network\mcpe\NetworkSession;
@@ -12,6 +13,7 @@ use pocketmine\nbt\tag\CompoundTag;
 
 use minecraft\Player;
 
+use DeadlyCraft\Main;
 use DeadlyCraft\player\job\Job;
 use DeadlyCraft\player\job\Soldier;
 use DeadlyCraft\inventory\PlayerInventory;
@@ -98,11 +100,49 @@ class PlayerSession extends Player{
     }
 
     public function addFriend(string $name) :void{
+        $newFriend = Main::getInstance()->getIPlayerByName($name);
+        if(!$newFriend instanceof IPlayer) return;
+        $fdata = $newFriend->getAccountData()->getData("friend");
+        $fdata["applying"] = array_diff($fdata["applying"], [$this->getName()]);
+        $fdata["applying"] = array_values($fdata["applying"]);
+        $fdata["applied"] = array_diff($fdata["applied"], [$this->getName()]);
+        $fdata["applied"] = array_values($fdata["applied"]);
+        $fdata["friends"][] = $this->getName();
+        $newFriend->getAccountData()->setData("friend", $fdata);
+        if($newFriend instanceof Player) {
+            $newFriend->sendMessage($this->getName()."とフレンドになりました。");
+        }else{
+            $newFriend->getAccountData()->saveToData();
+        }
 
+        $data = $this->getAccountData()->getData("friend");
+        $data["applying"] = array_diff($data["applying"], [$name]);
+        $data["applying"] = array_values($data["applying"]);
+        $data["applied"] = array_diff($data["applied"], [$name]);
+        $data["applied"] = array_values($data["applied"]);
+        $data["friends"][] = $name;
+        $this->getAccountData()->setData("friend", $data);
+        $this->sendMessage($name."とフレンドになりました。");
     }
 
     public function removeFriend(string $name) :void{
+        $rFriend = Main::getInstance()->getIPlayerByName($name);
+        if(!$rFriend instanceof IPlayer) return;
+        $fdata = $rFriend->getAccountData()->getData("friend");
+        $fdata["friends"] = array_diff($fdata["friends"], [$this->getName()]);
+        $fdata["friends"] = array_values($fdata["friends"]);
+        $rFriend->getAccountData()->setData("friend", $fdata);
+        if($rFriend instanceof Player) {
+            $rFriend->sendMessage($this->getName()."とフレンド解除");
+        }else{
+            $rFriend->getAccountData()->saveToData();
+        }
 
+        $data = $this->getAccountData()->getData("friend");
+        $data["friends"] = array_diff($data["friends"], [$name]);
+        $data["friends"] = array_values($data["friends"]);
+        $this->getAccountData()->setData("friend", $data);
+        $this->sendMessage($name."とフレンド解除");
     }
 
     public function applyFriend(string $name) :void{
