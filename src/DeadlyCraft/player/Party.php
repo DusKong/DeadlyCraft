@@ -43,4 +43,10 @@ class Party {
     public function getMember() :array{
         return $this->member;
     }
+
+    public function broadcastMessage(string $message) :void{
+        foreach ($this->getMember() as $member) {
+            $member->sendMessage($message);
+        }
+    }
 }
