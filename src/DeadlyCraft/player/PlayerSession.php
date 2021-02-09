@@ -16,6 +16,7 @@ use minecraft\Player;
 use DeadlyCraft\Main;
 use DeadlyCraft\player\job\Job;
 use DeadlyCraft\player\job\Soldier;
+use DeadlyCraft\mail\Mail;
 use DeadlyCraft\inventory\PlayerInventory;
 use DeadlyCraft\inventory\PlayerArmorInventory;
 use DeadlyCraft\DataBase\AccountData;
@@ -88,6 +89,17 @@ class PlayerSession extends Player{
     public function setRank(int $rank) :void{
         $this->accountData->setData("rank", $rank);
         $this->setDefaultData();
+    }
+
+    public function sendMail(Mail $mail) :void{
+        $mails = $this->accountData->getData("mails");
+        $mails[$mail->getId()] = $mail;
+        $this->accountData->setData("mails", $mails);
+        $this->sendMessage($mail->getTitle());
+    }
+
+    public function getMails() :array{
+        return $this->accountData->getData("mails");
     }
 
     public function getFriends() :array{

@@ -12,6 +12,7 @@ class LobbyMenuForm extends Form{
         $this->createSimpleForm("メニュー");
         $this->addButton("パーティー (".count($player->getParty()->getMember()).")", "path", "textures/ui/multiplayer_glyph_color");
         $this->addButton("フレンド (".$this->getOnlineFriends($player->getFriends()).")", "path", "textures/ui/FriendsIcon");
+        $this->addButton("メール (".count($player->getMails()).")", "path", "textures/ui/comment");
         $this->addButton("設定", "path", "textures/ui/dev_glyph_color");
     }
 

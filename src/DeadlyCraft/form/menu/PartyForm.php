@@ -7,6 +7,7 @@ use pocketmine\player\Player;
 use minecraft\customui\Form;
 
 use DeadlyCraft\player\Party;
+use DeadlyCraft\mail\PartyMail;
 
 class PartyForm extends Form{
 
@@ -132,11 +133,8 @@ class PartyInviteFromFriendForm extends Form{
 
         $found = $this->list[$data];
         if($found->isOnline()) {
-            $party = $player->getParty();
-            if(count($party->getMember()) < Party::MAX_PLAYERS) {
-                $party->addMember($this->found);
-                $party->broadcastMessage($this->found->getName()."がパーティーに参加しました。");
-            }
+            $this->found->sendMail(new PartyMail($player->getName()));
+            $player->sendMessage($this->found->getName()."にパーティー申請を送信しました。");
         }else{
             
         }
@@ -154,10 +152,9 @@ class PartyInviteHitForm extends Form{
 
     public function handleResponse(Player $player, $data) :void{
         if($data) {
-            $party = $player->getParty();
-            if(count($party->getMember()) < Party::MAX_PLAYERS) {
-                $party->addMember($this->found);
-                $party->broadcastMessage($this->found->getName()."がパーティーに参加しました。");
+            if($this->found->isOnline()) {
+                $this->found->sendMail(new PartyMail($player->getName()));
+                $player->sendMessage($this->found->getName()."にパーティー申請を送信しました。");
             }
         }else{
             $player->sendForm(new PartyInviteFromNameForm());
@@ -181,6 +178,26 @@ class PartyNotFoundForm extends Form{
             $player->sendForm(new PartyInviteFromNameForm($this->keyword));
         }else{
             $player->sendForm(new PartyForm($player));
+        }
+    }
+}
+
+class PartyJoinForm extends Form{
+
+    private $owner;
+
+    public function __construct(Player $owner) {
+        $this->createModalWindow("", $owner->getName()."からパーティー申請が来ています。\n参加しますか？", "参加", "キャンセル");
+        $this->owner = $owner;
+    }
+
+    public function handleResponse(Player $player, $data) :void{
+        if($data) {
+            $party = $this->owner->getParty();
+            if(count($party->getMember()) < Party::MAX_PLAYERS) {
+                $party->addMember($player);
+                $party->broadcastMessage($player->getName()."がパーティーに参加しました。");
+            }
         }
     }
 }

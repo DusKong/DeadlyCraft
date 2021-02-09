@@ -3,6 +3,7 @@
 namespace DeadlyCraft\player;
 
 use pocketmine\player\IPlayer;
+use DeadlyCraft\mail\Mail;
 use DeadlyCraft\DataBase\AccountData;
 use DeadlyCraft\DataBase\StatusData;
 
@@ -42,6 +43,12 @@ class OfflinePlayer implements IPlayer{
 
     public function setRank(int $rank) :void{
         $this->accountData->setData("rank", $rank);
+    }
+
+    public function sendMail(Mail $mail) :void{
+        $mails = $this->accountData->getData("mails");
+        $mails[spl_object_hash($mail)] = $mail;
+        $this->accountData->setData("mails", $mails);
     }
 
     public function checkData() :void{

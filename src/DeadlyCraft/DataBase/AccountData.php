@@ -6,6 +6,7 @@ use pocketmine\Server;
 
 use DeadlyCraft\Main;
 use DeadlyCraft\player\job\Soldier;
+use DeadlyCraft\mail\PartyMail;
 
 class AccountData extends PlayerData {
 
@@ -27,6 +28,8 @@ class AccountData extends PlayerData {
                 "applying" => [],
                 "applied" => [],
             ],
+            "mails" => [
+            ],
             "deviceId" => "",
             "ip" => "",
         ];
@@ -38,5 +41,21 @@ class AccountData extends PlayerData {
             Server::getInstance()->getLogger()->info("§bCreating New PlayerData (".$this->name.") ID:".$this->status["id"]);
         }
         return $c;
+    }
+
+    public function jsonSerialize() :array{
+        $status = $this->status;
+        foreach ($status["mails"] as $hash => $mail) {
+            if($mail instanceof PartyMail) continue;
+            $status["mails"][$hash] = serialize($mail);
+        }
+        return $status;
+    }
+
+    public function jsonDeserialize(array $status) :array{
+        foreach ($status["mails"] as $hash => $smail) {
+            $status["mails"][$hash] = unserialize($smail);
+        }
+        return $status;
     }
 }
