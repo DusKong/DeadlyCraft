@@ -71,7 +71,8 @@ class PartyInviteForm extends Form{
 
     public function __construct() {
         $this->createSimpleForm("招待する方法を選んでください");
-        $this->addButton("名前入力");
+        $this->addButton("プレイヤーIDから検索");
+        $this->addButton("名前から検索");
         $this->addButton("フレンドから");
         //$this->addButton("プレイヤーをタップ");
     }
@@ -83,9 +84,11 @@ class PartyInviteForm extends Form{
         }
         switch($data) {
             case 0:
-                $player->sendForm(new PartyInviteFromNameForm());
                 break;
             case 1:
+                $player->sendForm(new PartyInviteFromNameForm());
+                break;
+            case 2:
                 $player->sendForm(new PartyInviteFromFriendForm($player));
                 break;
         }
@@ -106,7 +109,7 @@ class PartyInviteFromNameForm extends Form{
         }
         
         $found = Server::getInstance()->getPlayerByPrefix($data[0]);
-        if($found instanceof Player) {
+        if($found instanceof Player && !$player->getParty()->isAlreadyMember($found)) {
             $player->sendForm(new PartyInviteHitForm($found));
         }else{
             $player->sendForm(new PartyNotFoundForm($data[0]));
@@ -173,8 +176,6 @@ class PartyNotFoundForm extends Form{
 
     public function handleResponse(Player $player, $data) :void{
         if($data) {
-            //$form = new PartyInviteFromNameForm();
-            //$form->handleResponse($player, [0 => $this->keyword]);
             $player->sendForm(new PartyInviteFromNameForm($this->keyword));
         }else{
             $player->sendForm(new PartyForm($player));

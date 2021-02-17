@@ -10,7 +10,7 @@ abstract class Mail {
 
     private $title;
     private $date;
-    private $id;
+    protected $id;
 
     public function __construct(string $title) {
         $this->title = $title;
@@ -26,6 +26,6 @@ abstract class Mail {
         return $this->title;
     }
 
-    public function openMail(Player $player) {
+    public function open(Player $player) {
     }
 }

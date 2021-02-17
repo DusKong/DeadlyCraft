@@ -24,6 +24,6 @@ class MailForm extends Form{
         if($data === null) return;
 
         $mail = $this->list[$data];
-        $mail->openMail($player);
+        $mail->open($player);
     }
 }

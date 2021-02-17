@@ -16,11 +16,12 @@ class PartyMail extends Mail{
         $this->ownerName = $ownerName;
     }
 
-    public function openMail(Player $player) {
+    public function open(Player $player) {
         $owner = Server::getInstance()->getPlayerByPrefix($this->ownerName);
         if($owner instanceof Player) {
             if($owner->getParty()->isOwner($owner)) {
                 $player->sendForm(new PartyJoinForm($owner));
+                $player->deleteMail($this->id);
                 return;
             }
         }

@@ -48,7 +48,7 @@ class EventListener implements Listener {
 
         $scoreboard = $player->getScoreboard();
         $scoreboard->clear();
-        $scoreboard->setScore(0, "".$player->getAccountData()->getData("coin"));
+        $scoreboard->setScore(0, "a".$player->getAccountData()->getData("coin"));
         $scoreboard->setScore(1, "".$player->getAccountData()->getData("medal"));
         $scoreboard->setScore(2, "2");
         $scoreboard->setScore(3, "3");

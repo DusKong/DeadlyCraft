@@ -17,6 +17,7 @@ use DeadlyCraft\Main;
 use DeadlyCraft\player\job\Job;
 use DeadlyCraft\player\job\Soldier;
 use DeadlyCraft\mail\Mail;
+use DeadlyCraft\mail\FriendMail;
 use DeadlyCraft\inventory\PlayerInventory;
 use DeadlyCraft\inventory\PlayerArmorInventory;
 use DeadlyCraft\DataBase\AccountData;
@@ -55,6 +56,10 @@ class PlayerSession extends Player{
 
     public function getStatusData() :StatusData{
         return $this->statusData;
+    }
+
+    public function getDataId() :int{
+        return $this->accountData->getData("id");
     }
 
     public function getMode() :int{
@@ -96,6 +101,12 @@ class PlayerSession extends Player{
         $mails[$mail->getId()] = $mail;
         $this->accountData->setData("mails", $mails);
         $this->sendMessage($mail->getTitle());
+    }
+
+    public function deleteMail(string $id) :void{
+        $mails = $this->accountData->getData("mails");
+        if(isset($mails[$id])) unset($mails[$id]);
+        $this->accountData->setData("mails", $mails);
     }
 
     public function getMails() :array{
@@ -157,16 +168,52 @@ class PlayerSession extends Player{
         $this->sendMessage($name."とフレンド解除");
     }
 
-    public function applyFriend(string $name) :void{
+    public function applyFriend(string $name) :bool{
+        $friend = Main::getInstance()->getIPlayerByName($name);
+        if($friend instanceof IPlayer) {
+            if($friend->getName() == $this->getName()) {
+                return false;
+            }
 
-    }
+            $fdata = $friend->getAccountData()->getData("friend");
+            if(in_array($this->getName(), $fdata["applying"])) {
+                $this->addFriend($name);
+                return true;
+            }
 
-    public function removeApplied(string $name) :void{
+            if(in_array($this->getName(), $fdata["applied"]) || in_array($this->getName(), $fdata["friends"])) {
+                $player->sendMessage("既に送信済みです。");
+                return false;
+            }
 
+            $fdata["applied"][] = $this->getName();
+            $friend->getAccountData()->setData("friend", $fdata);
+            $friend->sendMail(new FriendMail($this->getName()));
+            if(!$friend instanceof Player) $friend->getAccountData()->saveToData();
+
+            $data = $this->getAccountData()->getData("friend");
+            $data["applying"][] = $friend->getName();
+            $this->getAccountData()->setData("friend", $data);
+            $this->sendMessage($friend->getName()."にフレンド申請を送信しました。");
+            return true;
+        }
+        return false;
     }
 
     public function removeApplying(string $name) :void{
-        
+        $friend = Main::getInstance()->getIPlayerByName($name);
+        if($friend instanceof IPlayer) {
+            $fdata = $friend->getAccountData()->getData("friend");
+            $fdata["applied"] = array_diff($fdata["applied"], [$this->getName()]);
+            $fdata["applied"] = array_values($fdata["applied"]);
+            $friend->getAccountData()->setData("friend", $fdata);
+            if(!$friend instanceof Player) $friend->getAccountData()->saveToData();
+
+            $data = $this->getAccountData()->getData("friend");
+            $data["applying"] = array_diff($data["applying"], [$friend->getName()]);
+            $data["applying"] = array_values($fdata["applying"]);
+            $this->getAccountData()->setData("friend", $data);
+        }
     }
 
     public function setDefaultData() :void{

@@ -15,6 +15,8 @@ use pocketmine\nbt\JsonNbtParser;
 
 use minecraft\world\structure\LoadStructure;
 
+use pocketmine\network\mcpe\protocol\TextPacket;
+
 class TestCommand extends VanillaCommand {
 
     public function __construct(string $name){
@@ -34,7 +36,7 @@ class TestCommand extends VanillaCommand {
        // $load->setOrigin((int) $sender->getPosition()->getX(), (int) $sender->getPosition()->getY(), (int) $sender->getPosition()->getZ());
         //$load->build($sender->getWorld());
 
-        $skinData = $sender->getSkin()->getSkinData();
+        /*$skinData = $sender->getSkin()->getSkinData();
         $image = imagecreatetruecolor(64, 64);
 
         $black = imagecolorallocate($image, 0, 0, 0);
@@ -54,6 +56,11 @@ class TestCommand extends VanillaCommand {
 
         if(!file_exists('test')) mkdir('test');
         imagepng($image, 'test/'.strtolower($sender->getName()).'.png');
-        imagedestroy($image);
+        imagedestroy($image);*/
+
+        $pk = new TextPacket();
+        $pk->type = TextPacket::TYPE_JUKEBOX_POPUP;
+        $pk->message = "§atesttesttest";
+        $sender->getNetworkSession()->sendDataPacket($pk);
     }
 }

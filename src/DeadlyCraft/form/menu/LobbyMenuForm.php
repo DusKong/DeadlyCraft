@@ -23,8 +23,10 @@ class LobbyMenuForm extends Form{
                 $player->sendForm(new PartyForm($player));
                 break;
             case 1:
+                $player->sendForm(new FriendForm($player));
                 break;
             case 2:
+                $player->sendForm(new MailForm($player));
                 break;
             case 3:
                 break;
@@ -34,7 +36,7 @@ class LobbyMenuForm extends Form{
     public function getOnlineFriends(array $friends) :int{
         $online = 0;
         foreach ($friends as $friend) {
-            if($friend !== null) {
+            if($friend instanceof Player) {
                 $online++;
             }
         }

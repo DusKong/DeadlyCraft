@@ -21,6 +21,16 @@ class OfflinePlayer implements IPlayer{
         $this->checkData();
     }
 
+    public function getName() :string{
+        return $this->name;
+    }
+
+    public function getFirstPlayed() : ?int{ return null; }
+
+    public function getLastPlayed() : ?int{ return null; }
+
+    public function hasPlayedBefore() : bool{ return false; }
+
     public function getAccountData() :AccountData{
         return $this->accountData;
     }
@@ -47,7 +57,7 @@ class OfflinePlayer implements IPlayer{
 
     public function sendMail(Mail $mail) :void{
         $mails = $this->accountData->getData("mails");
-        $mails[spl_object_hash($mail)] = $mail;
+        $mails[$mail->getId()] = $mail;
         $this->accountData->setData("mails", $mails);
     }
 

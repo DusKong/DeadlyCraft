@@ -44,6 +44,10 @@ class Party {
         return $this->member;
     }
 
+    public function isAlreadyMember(Player $player) :bool{
+        return isset($this->getMember()[$player->getName()]);
+    }
+
     public function broadcastMessage(string $message) :void{
         foreach ($this->getMember() as $member) {
             $member->sendMessage($message);

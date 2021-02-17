@@ -2,16 +2,22 @@
 
 namespace DeadlyCraft\mail;
 
+use pocketmine\player\Player;
+use DeadlyCraft\Main;
+use DeadlyCraft\form\menu\FriendAcceptForm;
+
 class FriendMail extends Mail{
 
-    private $friendName;
+    private $senderName;
 
-    public function __construct(string $friendName) {
-        parent::__construct($friendName."からフレンド申請が来ています。");
-        $this->friendName = $friendName;
+    public function __construct(string $senderName) {
+        parent::__construct($senderName."からフレンド申請が来ています。");
+        $this->senderName = $senderName;
     }
 
-    public function openMail(Player $player) {
-        $player->sendForm(new )
+    public function open(Player $player) {
+        $sender = Main::getInstance()->getIPlayerByName($this->senderName);
+        $player->sendForm(new FriendAcceptForm($sender));
+        $player->deleteMail($this->id);
     }
 }
