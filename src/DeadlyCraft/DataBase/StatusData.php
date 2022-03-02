@@ -9,7 +9,7 @@ use DeadlyCraft\inventory\SerializeInventory;
 
 class StatusData extends PlayerData {
 
-    public $tableName = "status";
+    public $tableName = "statusaaa";
 
     public function __construct(string $name) {
         parent::__construct($name);
